@@ -40,9 +40,11 @@ jobs:
           key:
             pyproject-${{ env.pythonLocation }}-${{ env.PYTHON_VERSION }}-${{hashFiles('pyproject.toml') }}
 
-      - name: Install editable package
-        if: steps.requirements-dev-cache.outputs.cache-hit != 'true'
-        run: pip install --editable .
+      - name: Install packages
+        if: steps.dependency-cache.outputs.cache-hit != 'true'
+        run: |
+          pip install pre-commit
+          pip install --editable .
         
       - uses: actions/cache@v3
         name: Load pre-commit cache
@@ -52,9 +54,7 @@ jobs:
             pre-commit-${{ env.pythonLocation }}-${{ env.PYTHON_VERSION }}-${{hashFiles('.pre-commit-config.yaml') }}
 
       - name: Run pre-commit on all files
-        run: |
-          pip install pre-commit
-          pre-commit run --all-files
+        run: pre-commit run --all-files
 
   build-and-deploy:
     name: Deploy to AWS Lambda
@@ -128,7 +128,7 @@ jobs:
             pyproject-${{ env.pythonLocation }}-${{ env.PYTHON_VERSION }}-${{hashFiles('pyproject.toml') }}
 
       - name: Install editable package
-        if: steps.requirements-dev-cache.outputs.cache-hit != 'true'
+        if: steps.dependency-cache.outputs.cache-hit != 'true'
         run: pip install --editable .
         
 #      - name: Run pytest
