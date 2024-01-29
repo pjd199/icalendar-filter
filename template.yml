@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Template for the iCalendar Filter
+
+Resources:
+  ICalendarFilterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      PackageType: Image
+      Timeout: 300
+      MemorySize: 1024
+      Architectures:
+      - arm64
+      FunctionUrlConfig:
+        AuthType: NONE
+    Metadata:
+      DockerTag: ICalendarFilterFunction
+      Dockerfile: Dockerfile
+      DockerContext: .
+
+Outputs:
+  Function:
+    Description: "iCalendar Filter Function ARN"
+    Value: !GetAtt ICalendarFilterFunction.Arn
+  ICalendarFilterFunctionURL:
+    Description: "iCalendar URL HTTP endpoint"
+    Value: !GetAtt ICalendarFilterFunctionUrl.FunctionUrl
