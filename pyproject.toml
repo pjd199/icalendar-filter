@@ -28,10 +28,11 @@ classifiers = [
     "Natural Language :: English",
 ]
 dependencies = [
-    "Flask>=3",
-    "Flask-Cors>=4",
-    "apig-wsgi>=2",
+    "Flask>=3.0",
+    "Flask-Cors>=4.0",
+    "apig-wsgi>=2.18",
     "requests==2.31",
+    "icalendar==5.0",
 ]
 
 [project.urls]
