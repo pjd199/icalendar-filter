@@ -52,7 +52,9 @@ jobs:
             pre-commit-${{ env.pythonLocation }}-${{ env.PYTHON_VERSION }}-${{hashFiles('.pre-commit-config.yaml') }}
 
       - name: Run pre-commit on all files
-        run: pre-commit run --all-files
+        run: |
+          pip install pre-commit
+          pre-commit run --all-files
 
   build-and-deploy:
     name: Deploy to AWS Lambda
