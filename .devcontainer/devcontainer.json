@@ -1,0 +1,24 @@
+{
+	"name": "Python 3",
+	"image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/ruff:1": {},
+		"ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
+	},
+	"postCreateCommand": {
+		"install package": "pip install -e .",
+		"pre-commit": "pre-commit install --install-hooks"
+	},
+	"postAttachCommand": {
+		"git pull": "git pull"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"charliermarsh.ruff",
+				"njpwerner.autodocstring",
+				"redhat.vscode-yaml"
+			]
+		}
+	}
+}
