@@ -38,4 +38,4 @@ COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
 
 # Set entry point and lambda handler
 ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
-CMD ["advent_of_code.app.lambda_handler"]
+CMD ["icalendar-filter.app.lambda_handler"]
