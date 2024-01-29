@@ -1,10 +1,15 @@
 import requests
 import icalendar
-from flask import Flask, request
+from flask import Flask, request, Response
+
+from apig_wsgi import make_lambda_handler
+from flask_cors import cross_origin
 
 app = Flask(__name__)
+lambda_handler = make_lambda_handler(app)
 
 @app.route('/', methods=['GET'])
+@cross_origin()
 def filter_events():
     url = request.args.get('url')
     words = request.args.getlist('words')
@@ -15,4 +20,5 @@ def filter_events():
         if all(word not in str(event.get('SUMMARY')) and word not in str(event.get('DESCRIPTION')) for word in words):
             filtered_events.append(event)
     calendar.subcomponents = filtered_events
-    return calendar.to_ical().decode('utf-8')
+    response = Response(calendar.to_ical(), mimetype='text/calendar')
+    return response
