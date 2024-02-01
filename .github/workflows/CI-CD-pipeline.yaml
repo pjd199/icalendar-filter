@@ -86,12 +86,11 @@ jobs:
         run: sam validate --lint
 
       - name: SAM Build
-        run: sam build
+        run: sam build --config-file samconfig.toml
 
       - name: SAM Deploy to AWS Lambda
         run:
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
-          --config-file ${{ env.SAM_CONFIG_FILE }}
 
   system-test:
     name: System Testing
