@@ -1,0 +1,9 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "icalendar-fiter"
+#s3_bucket = 
+#s3_prefix = "icalendar-fiter"
+region = "eu-west-2"
+capabilities = "CAPABILITY_IAM"

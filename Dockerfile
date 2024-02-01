@@ -1,6 +1,8 @@
 # Define custom function directory
 ARG FUNCTION_DIR="/var/task/"
 
+# Define package source
+ARG BUILD_PACKAGE=icalendar-filter@git+https://github.com/pjd199/icalendar-filter@main
 #
 # Create the build image 
 #

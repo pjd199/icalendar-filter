@@ -64,11 +64,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Set variables
-        run: |
-          echo "SAM_CONFIG_FILE=samconfig.toml" >> $GITHUB_ENV
-          echo -e "ARG BUILD_PACKAGE=icalendar-filter@git+https://github.com/pjd199/icalendar-filter@main\n$(cat Dockerfile)" > Dockerfile
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -91,7 +86,7 @@ jobs:
         run: sam validate --lint
 
       - name: SAM Build
-        run: sam build --config-file ${{ env.SAM_CONFIG_FILE }}
+        run: sam build --config-file samconfig.toml
 
       - name: SAM Deploy to AWS Lambda
         run:
