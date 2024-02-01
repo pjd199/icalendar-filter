@@ -13,6 +13,7 @@ lambda_handler = make_lambda_handler(app)
 @cross_origin()
 def filter_events() -> Response:
     """Handle the root path."""
+    return Response("Hello", mimetype="text/plain")
     url = request.args.get("url")
     if url is None:
         abort(401)
