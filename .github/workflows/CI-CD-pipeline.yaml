@@ -86,7 +86,7 @@ jobs:
         run: sam validate --lint
 
       - name: SAM Build
-        run: sam build --config-file samconfig.toml
+        run: sam build
 
       - name: SAM Deploy to AWS Lambda
         run:
