@@ -13,24 +13,19 @@ lambda_handler = make_lambda_handler(app)
 @cross_origin()
 def filter_events() -> Response:
     """Handle the root path."""
-    return Response(
-        f"Hello url={request.args.get('url')} words={request.args.getlist('words')}",
-        mimetype="text/plain",
-    )
-    url = request.args.get("url")
+    url = request.args.get("ics")
     if url is None:
-        abort(401)
-    words = request.args.getlist("words")
+        abort(400, description="URL Parameter 'ics' is missing")
+    exclude = request.args.getlist("exclude")
     ics_data = requests.get(url, timeout=60).text
     calendar = icalendar.Calendar.from_ical(ics_data)
-    filtered_events = [
+    calendar.subcomponents = [
         event
         for event in calendar.walk("VEVENT")
         if all(
             word not in str(event.get("SUMMARY"))
             and word not in str(event.get("DESCRIPTION"))
-            for word in words
+            for word in exclude
         )
     ]
-    calendar.subcomponents = filtered_events
     return Response(calendar.to_ical(), mimetype="text/calendar")
