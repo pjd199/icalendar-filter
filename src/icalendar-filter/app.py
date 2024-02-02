@@ -23,8 +23,8 @@ def filter_events() -> Response:
         event
         for event in calendar.walk("VEVENT")
         if all(
-            word not in str(event.get("SUMMARY"))
-            and word not in str(event.get("DESCRIPTION"))
+            word.lower() not in str(event.get("SUMMARY")).lower()
+            and word.lower() not in str(event.get("DESCRIPTION")).lower()
             for word in exclude
         )
     ]
