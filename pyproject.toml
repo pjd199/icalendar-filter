@@ -31,8 +31,9 @@ dependencies = [
     "Flask>=3.0",
     "Flask-Cors>=4.0",
     "apig-wsgi>=2.18",
-    "requests==2.31",
-    "icalendar==5.0",
+    "requests>=2.31",
+    "icalendar>=5.0",
+    "recurring-ical-events>=2.1",
 ]
 
 [project.urls]
