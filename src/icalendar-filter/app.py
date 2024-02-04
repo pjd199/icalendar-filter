@@ -21,7 +21,7 @@ def filter_events() -> Response:
     start_date = request.args.get("start")
     end_date = request.args.get("end")
     merge_travel = (
-        request.args.get("merge-travel") is not None
+        request.args.get("travel") is not None
         and str(request.args.get("travel")).lower() == "true"
     )
     ics_data = requests.get(url, timeout=60).text
