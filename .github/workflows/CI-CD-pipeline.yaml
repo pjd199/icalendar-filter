@@ -24,15 +24,15 @@ jobs:
 
     steps:
       - name: Check out Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
       
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         name: Load dependency cache
         id: dependency-cache
         with:
@@ -46,7 +46,7 @@ jobs:
           pip install pre-commit
           pip install --editable .
         
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         name: Load pre-commit cache
         with:
           path: ~/.cache/pre-commit
@@ -62,13 +62,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Setup AWS SAM
         uses: aws-actions/setup-sam@v2
@@ -76,7 +76,7 @@ jobs:
           use-installer: true
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -98,22 +98,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out respository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup up python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         name: Load dependency cache
         id: dependency-cache
         with:
