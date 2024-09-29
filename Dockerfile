@@ -6,7 +6,7 @@ ARG BUILD_PACKAGE=icalendar-filter@git+https://github.com/pjd199/icalendar-filte
 #
 # Create the build image 
 #
-FROM --platform=linux/arm64 python:3.12.1-bookworm as build-image
+FROM --platform=linux/arm64 python:3.12.6-bookworm as build-image
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
@@ -28,7 +28,7 @@ RUN pip install --target ${FUNCTION_DIR} awslambdaric ${BUILD_PACKAGE}
 #
 # Create the runtime image from the build image
 #
-FROM --platform=linux/arm64 python:3.12.1-slim-bookworm
+FROM --platform=linux/arm64 python:3.12.6-slim-bookworm
 
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
