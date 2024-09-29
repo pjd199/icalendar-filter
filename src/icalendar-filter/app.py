@@ -51,8 +51,16 @@ def filter_events() -> Response:
                 event["DTSTART"] = (travel_ends[event["DTSTART"].dt])["DTSTART"]
             if event["DTEND"].dt in travel_starts:
                 event["DTEND"] = (travel_starts[event["DTEND"].dt])["DTEND"]
-
-        events = [event for event in events if event not in travel_events]
+        events = [
+            event
+            for event in events
+            if not (
+                event.get("SUMMARY") is not None
+                and "travel" in str(event.get("SUMMARY")).lower()
+                and event.get("DESCRIPTION") is not None
+                and "this event was created by" in event.get("DESCRIPTION").lower()
+            )
+        ]
 
     # filter the keywords
     events = [
