@@ -40,7 +40,10 @@ def filter_events() -> Response:
         travel_events = [
             event
             for event in events
-            if "travel" in event.get("SUMMARY", "").lower()
+            if (
+                "travel" in event.get("SUMMARY", "").lower()
+                or "decompress" in event.get("SUMMARY", "").lower()
+            )
             and "this event was created by" in event.get("DESCRIPTION", "").lower()
         ]
         # create a mapping for all the start and end times for each travel event
