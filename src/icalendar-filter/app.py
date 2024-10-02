@@ -24,6 +24,7 @@ def filter_events() -> Response:
     start_date = request.args.get("start")
     end_date = request.args.get("end")
     tag_travel = "tag_travel" in request.args
+    tag_decompress = "tag_decompress" in request.args
     ics_data = requests.get(url, timeout=60).text
     calendar = icalendar.Calendar.from_ical(ics_data)
 
@@ -40,10 +41,7 @@ def filter_events() -> Response:
         travel_events = [
             event
             for event in events
-            if (
-                "travel" in event.get("SUMMARY", "").lower()
-                or "decompress" in event.get("SUMMARY", "").lower()
-            )
+            if "travel" in event.get("SUMMARY", "").lower()
             and "this event was created by" in event.get("DESCRIPTION", "").lower()
         ]
         # create a mapping for all the start and end times for each travel event
@@ -69,17 +67,37 @@ def filter_events() -> Response:
                     travel_time_starts.pop(travel_event["DTSTART"].dt, None)
                     travel_time_ends.pop(travel_event["DTEND"].dt, None)
 
-    # filter the keywords
-    if exclude:
-        events = [
+    # tag decompress events
+    if tag_decompress:
+        # list all the decompress event
+        decompress_events = [
             event
             for event in events
-            if all(
-                word.lower() not in str(event.get("SUMMARY")).lower()
-                and word.lower() not in str(event.get("DESCRIPTION")).lower()
-                for word in exclude
-            )
+            if "decompress" in event.get("SUMMARY", "").lower()
+            and "this event was created by" in event.get("DESCRIPTION", "").lower()
         ]
+        # create a mapping for all the start times for each decompress event
+        decompress_time_starts = {e["DTSTART"].dt: e for e in decompress_events}
+        for event in events:
+            # extract the tags in the event
+            tags = findall(r"#\w+", event.get("SUMMARY", ""))
+            # look for a decompress event that directly follows this event
+            if tags and event["DTEND"].dt in decompress_time_starts:
+                decompress_event = decompress_time_starts[event["DTEND"].dt]
+                decompress_event["SUMMARY"] += " " + " ".join(tags)
+                # pop travel_event to avoid duplicate processing
+                decompress_time_starts.pop(travel_event["DTSTART"].dt, None)
+
+    # filter the keywords
+    events = [
+        event
+        for event in events
+        if all(
+            word.lower() not in str(event.get("SUMMARY")).lower()
+            and word.lower() not in str(event.get("DESCRIPTION")).lower()
+            for word in exclude
+        )
+    ]
 
     # update the calendar and send response
     calendar.subcomponents = events
